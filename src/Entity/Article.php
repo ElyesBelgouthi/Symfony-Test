@@ -61,9 +61,10 @@ class Article
         return $this->date_de_creation;
     }
 
+    #[ORM\PrePersist()]
     public function setDateDeCreation(\DateTimeImmutable $date_de_creation): static
     {
-        $this->date_de_creation = $date_de_creation;
+        $this->date_de_creation = new \DateTimeImmutable("now");
 
         return $this;
     }
