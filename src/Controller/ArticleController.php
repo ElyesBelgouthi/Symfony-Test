@@ -33,14 +33,58 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
-
+            $article->setAuteur($this->getUser());
             $manager->persist($article);
             $manager->flush();
+            $this->addFlash(
+                "success",
+                "Votre article a bien été crée"
+            );
+            return $this->redirectToRoute('app_article');
         }
 
         return $this->render('article/new.html.twig', [
             'controller_name' => 'ArticleController',
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/article/edit/{id}', name: 'app_edit_article', methods: ["GET", "POST"])]
+    public function editArticle(int $id,EntityManagerInterface $manager, ArticleRepository $articleRepository): Response
+    {
+        $article =  $articleRepository->find($id);
+        if($article->getAuteur() != $this->getUser()){
+            $this->addFlash(
+                "error",
+                "Vous n'êtes pas propriétaire de l'article"
+            );
+        } else {
+            $manager->remove($article);
+            $manager->flush();
+            $this->addFlash(
+                "success",
+                "L'article a été supprimé"
+            );
+        }
+        return $this->redirectToRoute("app_article");
+    }
+    #[Route('/article/delete/{id}', name: 'app_delete_article', methods: ["GET"])]
+    public function deleteArticle(int $id,EntityManagerInterface $manager, ArticleRepository $articleRepository): Response
+    {
+        $article =  $articleRepository->find($id);
+        if($article->getAuteur() != $this->getUser()){
+            $this->addFlash(
+                "error",
+                "Vous n'êtes pas propriétaire de l'article"
+            );
+        } else {
+            $manager->remove($article);
+            $manager->flush();
+            $this->addFlash(
+                "success",
+                "L'article a été supprimé"
+            );
+        }
+        return $this->redirectToRoute("app_article");
     }
 }

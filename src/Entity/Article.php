@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Article
 {
     #[ORM\Id]
@@ -61,12 +62,13 @@ class Article
         return $this->date_de_creation;
     }
 
-    #[ORM\PrePersist()]
-    public function setDateDeCreation(\DateTimeImmutable $date_de_creation): static
+    #[ORM\PrePersist]
+    public function setDateDeCreation(): void
     {
-        $this->date_de_creation = new \DateTimeImmutable("now");
+        if ($this->date_de_creation === null) {
+            $this->date_de_creation = new \DateTimeImmutable();
+        }
 
-        return $this;
     }
 
     public function getAuteur(): ?User

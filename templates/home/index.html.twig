@@ -5,10 +5,11 @@
 {% block body %}
 
     <div class="container mt-4">
+
         <div class="content">
             <h1>Welcome to the Bolg App</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto distinctio dolore dolores earum esse incidunt ipsam laborum magni, maiores numquam odio placeat porro possimus qui reprehenderit temporibus totam unde voluptatum.</p>
         </div>
-        <button type="button" class="btn btn-primary">Browse Articles</button>
+        <a href="{{ path('app_article') }}"><button type="button" class="btn btn-primary" >Browse Articles</button></a>
     </div>
 {% endblock %}
