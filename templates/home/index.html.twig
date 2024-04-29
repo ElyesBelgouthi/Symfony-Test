@@ -6,10 +6,14 @@
 
     <div class="container mt-4">
 
-        <div class="content">
-            <h1>Welcome to the Bolg App</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto distinctio dolore dolores earum esse incidunt ipsam laborum magni, maiores numquam odio placeat porro possimus qui reprehenderit temporibus totam unde voluptatum.</p>
+        <div class="jumbotron">
+            <h1 class="display-4">Bienvenue sur l'application de blog</h1>
+            <p class="lead">Vous êtes passionné par l'écriture ou simplement avide de découvrir de nouveaux récits ? Bienvenue sur notre plateforme de blog, où vous pouvez explorer un monde riche en articles fascinants, discussions stimulantes et idées inspirantes.</p>
+            <hr class="my-4">
+            <p>Découvrez des histoires captivantes, des analyses perspicaces et des réflexions profondes sur une variété de sujets. Que vous soyez amateur de littérature, passionné de voyage, amateur de cuisine ou simplement curieux, notre blog saura satisfaire votre soif de connaissances et d'inspiration.</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{{ path('app_article') }}" role="button">Parcourir les articles</a>
+            </p>
         </div>
-        <a href="{{ path('app_article') }}"><button type="button" class="btn btn-primary" >Browse Articles</button></a>
     </div>
 {% endblock %}

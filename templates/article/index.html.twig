@@ -35,11 +35,12 @@
             <td>{{ article.getAuteur().getNom() }} {{ article.getAuteur().getPrenom() }}</td>
             <td>{{ article.getDateDeCreation() | date('d/m/Y') }}</td>
             <td>
-                <button type="button" class="btn btn-info"><i class="	fa fa-pencil-square-o" style="font-size:20px"></i>
-                </button>
+                <a href="{{ path('app_show_article', {'id': article.getId()}) }}"><button type="button" class="btn btn-success"><i class="fa fa-eye" style="font-size:20px"></i>
+                    </button></a>
+                <a href="{{ path('app_edit_article', {'id': article.getId()}) }}"><button type="button" class="btn btn-info"><i class="	fa fa-pencil-square-o" style="font-size:20px"></i>
+                    </button></a>
                 <a href="{{ path('app_delete_article', {'id': article.getId()}) }}"><button type="button" class="btn btn-danger"><i class="fa fa-trash" style="font-size:20px"></i>
                 </button></a>
-
             </td>
         </tr>
         {%  endfor %}

@@ -17,6 +17,10 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'security-login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if($this->getUser() !== null)
+        {
+            return $this->redirectToRoute('app_home');
+        }
         $lastUsername = $authenticationUtils->getLastUsername();
         $error = $authenticationUtils->getLastAuthenticationError();
 
@@ -31,6 +35,10 @@ class SecurityController extends AbstractController
     UserPasswordHasherInterface $userPasswordHasher
     ) : Response
     {
+        if($this->getUser() !== null)
+        {
+            return $this->redirectToRoute('app_home');
+        }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -59,6 +67,7 @@ class SecurityController extends AbstractController
 
     #[Route('/logout', name: 'security-logout')]
     public function logout()
-    {}
+    {
+    }
 
 }

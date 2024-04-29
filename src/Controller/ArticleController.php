@@ -38,7 +38,7 @@ class ArticleController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 "success",
-                "Votre article a bien été crée"
+                "Votre article a été crée avec succès"
             );
             return $this->redirectToRoute('app_article');
         }
@@ -49,24 +49,62 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/article/edit/{id}', name: 'app_edit_article', methods: ["GET", "POST"])]
-    public function editArticle(int $id,EntityManagerInterface $manager, ArticleRepository $articleRepository): Response
+    #[Route('/article/{id}', name: 'app_show_article', methods: ["GET"])]
+    public function showArticle(int $id, Request $request, ArticleRepository $articleRepository): Response
     {
-        $article =  $articleRepository->find($id);
-        if($article->getAuteur() != $this->getUser()){
+        $article = $articleRepository->find($id);
+        if (!$article) {
+            $this->addFlash(
+                "error",
+                "l'Article n'existe pas"
+            );
+            return $this->redirectToRoute("app_article");
+        }
+
+        return $this->render('article/show.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
+    #[Route('/article/edit/{id}', name: 'app_edit_article', methods: ["GET", "POST"])]
+    public function editArticle(int $id, Request $request, EntityManagerInterface $manager, ArticleRepository $articleRepository): Response
+    {
+        $article = $articleRepository->find($id);
+
+        if (!$article) {
+            $this->addFlash(
+                "error",
+                "l'Article n'existe pas"
+            );
+            return $this->redirectToRoute("app_article");
+        }
+
+        if ($article->getAuteur() != $this->getUser()) {
             $this->addFlash(
                 "error",
                 "Vous n'êtes pas propriétaire de l'article"
             );
-        } else {
-            $manager->remove($article);
+            return $this->redirectToRoute("app_article");
+        }
+        $form = $this->createForm(ArticleType::class,$article);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($article);
             $manager->flush();
+
             $this->addFlash(
                 "success",
-                "L'article a été supprimé"
+                "L'article a été modifié avec succès"
             );
+
+            return $this->redirectToRoute("app_article");
         }
-        return $this->redirectToRoute("app_article");
+
+        return $this->render('article/edit.html.twig', [
+            'form' => $form->createView(),
+            'article' => $article,
+        ]);
     }
     #[Route('/article/delete/{id}', name: 'app_delete_article', methods: ["GET"])]
     public function deleteArticle(int $id,EntityManagerInterface $manager, ArticleRepository $articleRepository): Response
@@ -82,7 +120,7 @@ class ArticleController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 "success",
-                "L'article a été supprimé"
+                "L'article a été avec succès"
             );
         }
         return $this->redirectToRoute("app_article");
