@@ -11,13 +11,13 @@ et de les modifier ou supprimer s'ils sont l'auteur de l'article.
 1. **Cloner le dépôt :**
 
     ```bash
-    git clone https://github.com/votre-utilisateur/votre-projet.git
+    git clone https://github.com/ElyesBelgouthi/Symfony-Test.git
     ```
 
 2. **Installer les dépendances via Composer :**
 
     ```bash
-    cd votre-projet
+    cd Symfony-Test
     composer install
     ```
 
